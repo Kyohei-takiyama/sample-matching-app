@@ -4,5 +4,9 @@
         "frontend",
         "backend",
         "iac"
-    ]
+    ],
+    "dependencies": {
+        "dotenv": "^16.4.7",
+        "hono": "^4.7.0"
+    }
 }

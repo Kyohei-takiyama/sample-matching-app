@@ -4,12 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "vite --mode development",
+    "build": "tsc -b && vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vitejs/plugin-react-swc": "^3.7.2",
+    "axios": "^1.7.9",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
