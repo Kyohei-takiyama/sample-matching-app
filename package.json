@@ -6,6 +6,7 @@
         "iac"
     ],
     "dependencies": {
+        "@aws-sdk/client-ssm": "^3.744.0",
         "dotenv": "^16.4.7",
         "hono": "^4.7.0"
     }

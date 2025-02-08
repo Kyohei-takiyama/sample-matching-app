@@ -5,6 +5,8 @@ npm create vite@latest frontend -- --template react-ts
 
 deploy vercel
 
+.env ファイルを含めていないため、環境変数の設定は vercel の UI から実施
+
 ## backend
 
 hono
