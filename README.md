@@ -7,7 +7,7 @@ deploy vercel
 
 .env ファイルを含めていないため、環境変数の設定は vercel の UI から実施
 
-Tailwindow css
+Tailwindow css + shadcn
 
 ## backend
 
