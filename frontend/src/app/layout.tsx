@@ -6,9 +6,9 @@ import type React from "react"; // Added import for React
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "StreamLine - Simplify Your Workflow",
+  title: "Sample Matching",
   description:
-    "StreamLine is an all-in-one project management solution that helps teams boost productivity and simplify collaboration.",
+    "副業を探すならSample Matching。あなたのスキルに合った案件を探しましょう。",
 };
 
 export default function RootLayout({
@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="ja" className="scroll-smooth">
       <body className={inter.className}>{children}</body>
     </html>
   );
