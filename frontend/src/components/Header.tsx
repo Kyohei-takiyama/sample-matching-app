@@ -6,23 +6,12 @@ export default function Header() {
     <header className="py-4 px-6 bg-white shadow-sm">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold text-primary">
-          StreamLine
+          Sample Matching
         </Link>
-        <nav className="hidden md:flex space-x-6">
-          <Link href="#features" className="text-gray-600 hover:text-primary">
-            Features
-          </Link>
-          <Link
-            href="#testimonials"
-            className="text-gray-600 hover:text-primary"
-          >
-            Testimonials
-          </Link>
-          <Link href="#pricing" className="text-gray-600 hover:text-primary">
-            Pricing
-          </Link>
-        </nav>
-        <Button>Get Started</Button>
+        <div className="flex space-x-4 flex-row">
+          <Button variant="outline">掲載をご検討中の企業様はこちら</Button>
+          <Button>ログイン</Button>
+        </div>
       </div>
     </header>
   );

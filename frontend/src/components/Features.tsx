@@ -29,9 +29,14 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="features" className="py-20 bg-gray-50">
+    <section
+      id="features"
+      className="py-20 bg-gradient-to-r from-primary to-primary-foreground text-white"
+    >
       <div className="container mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-12">Key Features</h2>
+        <h2 className="text-3xl font-bold text-center mb-12 text-secondary">
+          案件情報
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
             <div key={index} className="bg-white p-6 rounded-lg shadow-md">
