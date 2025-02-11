@@ -2,12 +2,27 @@
     "private": true,
     "workspaces": [
         "frontend",
-        "backend",
         "iac"
     ],
+    "scripts": {
+        "migrate:dev": "cd backend/lambda/src && bunx dotenv -e .env bunx prisma migrate dev",
+        "dev": "bunx dotenv -e ./backend/lambda/src/.env bun run backend/lambda/src/app.ts"
+    },
     "dependencies": {
         "@aws-sdk/client-ssm": "^3.744.0",
+        "@hono/zod-validator": "0.2.2",
+        "@prisma/client": "6.3.0",
+        "@types/aws-lambda": "8.10.147",
+        "@types/bun": "^1.2.2",
         "dotenv": "^16.4.7",
-        "hono": "^4.7.0"
+        "dotenv-cli": "8.0.0",
+        "hono": "4.6.2",
+        "install": "^0.13.0",
+        "uuid": "^11.0.5",
+        "zod": "3.23.8"
+    },
+    "devDependencies": {
+        "@types/uuid": "10.0.0",
+        "prisma": "6.3.0"
     }
 }

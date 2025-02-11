@@ -15,7 +15,7 @@ export class ParameterStack extends cdk.Stack {
       "FrontendUrlParameter",
       {
         parameterName: "/development/sample_matching_app/frontend_url",
-        stringValue: "https://sample-matching-app-frontend.vercel.app",
+        stringValue: "https://sample-matching-app-frontend-next.vercel.app",
         description: "URL for the frontend application",
       }
     );

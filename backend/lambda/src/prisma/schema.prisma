@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["linux-arm64-openssl-3.0.x", "darwin-arm64"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ユーザーが求人に応募する情報
+enum ApplicationStatus {
+  APPLIED
+  IN_REVIEW
+  ACCEPTED
+  REJECTED
+}
+
+// 副業希望者
+model User {
+  id            Int      @id @default(autoincrement())
+  cognitoUserId String   @unique // Cognito のユーザーIDを保存
+  firstName     String
+  lastName      String
+  email         String   @unique
+  phone         String?
+  skills        String?
+  experience    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  applications Application[]
+}
+
+// 企業情報は求人案件を持つエンティティとして管理
+model Company {
+  id        Int      @id @default(autoincrement())
+  name      String
+  website   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 企業に紐づく担当者（Contact）は複数持つ可能性があるので1:Nのリレーション
+  contacts Contact[]
+
+  // 企業が掲載する求人案件とのリレーション
+  jobOpportunities JobOpportunity[]
+}
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  companyId Int
+  firstName String
+  lastName  String
+  email     String   @unique
+  phone     String?
+  position  String? // 役職や部署など、必要に応じたフィールド
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id])
+}
+
+// 求人案件は企業に紐付く
+model JobOpportunity {
+  id             Int      @id @default(autoincrement())
+  title          String
+  description    String
+  skillsRequired String? // 求めるスキル（必要に応じて JSON も検討）
+  location       String?
+  compensation   String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // この求人を投稿した企業とのリレーション
+  companyId Int
+  company   Company @relation(fields: [companyId], references: [id])
+
+  // 応募とのリレーション
+  applications Application[]
+}
+
+model Application {
+  id               Int               @id @default(autoincrement())
+  userId           Int
+  jobOpportunityId Int
+  status           ApplicationStatus @default(APPLIED)
+  appliedAt        DateTime          @default(now())
+
+  user           User           @relation(fields: [userId], references: [id])
+  jobOpportunity JobOpportunity @relation(fields: [jobOpportunityId], references: [id])
+}
