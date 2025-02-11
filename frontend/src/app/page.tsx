@@ -1,19 +1,11 @@
-import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import Features from "@/components/Features";
-import CTA from "@/components/CTA";
-import Footer from "@/components/Footer";
+"use client";
+import { SessionProvider } from "next-auth/react";
+import Home from "@/app";
 
-export default function Home() {
+export default function App() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      <main>
-        <Hero />
-        <CTA />
-        <Features />
-      </main>
-      <Footer />
-    </div>
+    <SessionProvider>
+      <Home />
+    </SessionProvider>
   );
 }

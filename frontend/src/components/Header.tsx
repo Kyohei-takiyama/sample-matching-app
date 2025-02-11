@@ -1,10 +1,14 @@
 "use client";
+import { useSession } from "next-auth/react";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { signIn, signOut } from "next-auth/react";
 
 export default function Header() {
+  const { data: session } = useSession();
+
   const pathname = usePathname();
   const isHome = pathname === "/";
 
@@ -19,9 +23,11 @@ export default function Header() {
             <Button variant="outline" asChild>
               <Link href="/contact">掲載をご検討中の企業様はこちら</Link>
             </Button>
-            <Button asChild>
-              <Link href="/login">ログイン</Link>
-            </Button>
+            {session?.user ? (
+              <Button onClick={() => signOut()}>ログアウト</Button>
+            ) : (
+              <Button onClick={() => signIn("cognito")}>ログイン</Button>
+            )}
           </div>
         </div>
       ) : (
