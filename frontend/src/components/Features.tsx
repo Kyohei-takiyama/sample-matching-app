@@ -1,3 +1,5 @@
+"use client";
+
 import { Zap, Users, BarChart, Lock } from "lucide-react";
 
 const features = [

@@ -1,6 +1,7 @@
-import Link from "next/link";
+"use client";
+
 import { Button } from "@/components/ui/button";
-import { signIn, signOut } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 
 export default function Hero() {
