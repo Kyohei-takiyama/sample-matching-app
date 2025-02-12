@@ -8,6 +8,7 @@ import * as iam from "aws-cdk-lib/aws-iam";
 import * as ssm from "aws-cdk-lib/aws-ssm";
 import * as rds from "aws-cdk-lib/aws-rds";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
+import path = require("path");
 
 export interface BackendStackProps extends cdk.StackProps {
   frontendUrlParameter: ssm.IStringParameter;
@@ -41,6 +42,9 @@ export class BackendStack extends cdk.Stack {
       },
 
       architecture: lambda.Architecture.ARM_64,
+      // bunとnpmが共存しているためLambdaに適応するlockfileを明示的に指定する必要がある。
+      // 今回、iacとfrontendはnpmを利用し、backendはbunを使用しているので、ここではbunのロックファイルを指定する
+      depsLockFilePath: path.join(__dirname, "../../bun.lockb"),
       bundling: {
         // commandHooksでインストール前、バンドル前、後にコマンドを組み込める
         commandHooks: {

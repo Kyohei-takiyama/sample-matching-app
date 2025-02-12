@@ -97,12 +97,13 @@ export class RdsStack extends cdk.Stack {
       "Allow Lambda to access Aurora MySQL"
     );
 
-    // マイグレーション用のLambda関数
+    // マイグレーション用の Lambda 関数を作成
+    const dockerAssetDir = path.join(__dirname, "../../backend/lambda/src");
     const migrationLambda = new lambda.DockerImageFunction(
       this,
       "MigrationLambda",
       {
-        code: lambda.DockerImageCode.fromImageAsset("lambda", {
+        code: lambda.DockerImageCode.fromImageAsset(dockerAssetDir, {
           file: "Dockerfile",
           cmd: ["migration.handler"],
         }),

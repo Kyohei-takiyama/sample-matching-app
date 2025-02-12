@@ -36,6 +36,7 @@ model User {
   updatedAt     DateTime @updatedAt
 
   applications Application[]
+  Favorite     Favorite[]
 }
 
 // 企業情報は求人案件を持つエンティティとして管理
@@ -84,6 +85,7 @@ model JobOpportunity {
 
   // 応募とのリレーション
   applications Application[]
+  Favorite     Favorite[]
 }
 
 model Application {
@@ -92,7 +94,22 @@ model Application {
   jobOpportunityId Int
   status           ApplicationStatus @default(APPLIED)
   appliedAt        DateTime          @default(now())
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 
   user           User           @relation(fields: [userId], references: [id])
   jobOpportunity JobOpportunity @relation(fields: [jobOpportunityId], references: [id])
+}
+
+model Favorite {
+  id               Int      @id @default(autoincrement())
+  userId           Int
+  jobOpportunityId Int
+  createdAt        DateTime @default(now())
+
+  user           User           @relation(fields: [userId], references: [id])
+  jobOpportunity JobOpportunity @relation(fields: [jobOpportunityId], references: [id])
+
+  // 複合一意制約により、同じユーザーが同じ求人を複数登録できないようにする
+  @@unique([userId, jobOpportunityId])
 }
