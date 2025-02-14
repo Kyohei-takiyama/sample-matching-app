@@ -4,7 +4,7 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { handle, LambdaContext, LambdaEvent } from "hono/aws-lambda";
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
-import userApp from "./api/users/users";
+import userApp from "./api/users";
 
 // SSM Client を作成（リージョンは Lambda の実行環境に合わせる）
 const ssmClient = new SSMClient({
@@ -44,6 +44,7 @@ async function createApp(): Promise<Hono> {
 
   app.get("/", (c) => c.json({ message: "Hello, World!" }));
 
+  // /api/users 以下のリクエストは userApp にルーティング
   app.route("/api/users", userApp);
 
   return app;
@@ -53,7 +54,7 @@ if (import.meta.main) {
   const Bun = await import("bun");
   const app = await createApp();
   // PORT 環境変数があればそれを使い、なければ 5000 番ポートで起動
-  const port = Number(process.env.PORT) || 5000;
+  const port = Number(process.env.PORT) || 5050;
   console.log(`Starting server on http://localhost:${port}`);
   Bun.serve({
     fetch: app.fetch, // Hono アプリの fetch ハンドラを渡す

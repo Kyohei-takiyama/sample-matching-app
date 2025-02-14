@@ -19,9 +19,9 @@ export default function Header() {
     console.log(data);
   };
 
+  console.log(session);
   useEffect(() => {
     if (session?.user) {
-      console.log(session.user);
     }
   }, [session]);
 

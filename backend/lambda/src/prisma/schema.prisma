@@ -24,16 +24,16 @@ enum ApplicationStatus {
 
 // 副業希望者
 model User {
-  id            Int      @id @default(autoincrement())
-  cognitoUserId String   @unique // Cognito のユーザーIDを保存
-  firstName     String
-  lastName      String
-  email         String   @unique
-  phone         String?
-  skills        String?
-  experience    String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id           Int      @id @default(autoincrement())
+  firstName    String
+  lastName     String
+  email        String   @unique
+  phone        String?
+  skills       String?
+  experience   String?
+  salesforceId String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   applications Application[]
   Favorite     Favorite[]
@@ -41,11 +41,12 @@ model User {
 
 // 企業情報は求人案件を持つエンティティとして管理
 model Company {
-  id        Int      @id @default(autoincrement())
-  name      String
-  website   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           Int      @id @default(autoincrement())
+  name         String
+  website      String?
+  salesforceId String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   // 企業に紐づく担当者（Contact）は複数持つ可能性があるので1:Nのリレーション
   contacts Contact[]
@@ -55,15 +56,16 @@ model Company {
 }
 
 model Contact {
-  id        Int      @id @default(autoincrement())
-  companyId Int
-  firstName String
-  lastName  String
-  email     String   @unique
-  phone     String?
-  position  String? // 役職や部署など、必要に応じたフィールド
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           Int      @id @default(autoincrement())
+  companyId    Int
+  firstName    String
+  lastName     String
+  email        String   @unique
+  phone        String?
+  position     String? // 役職や部署など、必要に応じたフィールド
+  salesforceId String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   company Company @relation(fields: [companyId], references: [id])
 }

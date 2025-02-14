@@ -15,6 +15,11 @@ nextjs15 には App Router と Page Router があることを知った
 
 ## backend
 
+app（エントリポイント）はルーティングやミドルウェアの設定を担当、
+controller は HTTP リクエストとレスポンスのやり取りに専念
+logic 層ではビジネスロジックやバリデーション、データ変換などの処理
+model 層はデータベースとのやり取りや ORM（Prisma など）の操作
+
 参考：https://dev.classmethod.jp/articles/cdk-hono-crud-api-lambda-api-gateway-rds-aurora/#%25E7%2592%25B0%25E5%25A2%2583%25E6%25A7%258B%25E7%25AF%2589%25E9%2583%25A8%25E5%2588%2586
 bun
 hono
