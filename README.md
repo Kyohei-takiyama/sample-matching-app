@@ -28,6 +28,8 @@ cdk deploy
 prisma
 
 ```bash
+cd backend/lambda/src
+
 # マイグレーションファイルの作成と適用
 npx prisma migrate dev --name init
 
@@ -51,6 +53,7 @@ iac
 
 ```bash
 cd iac
+
 cdk deploy
 
 cdk deploy --all

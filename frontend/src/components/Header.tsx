@@ -5,12 +5,25 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { signIn, signOut } from "next-auth/react";
+import { useEffect } from "react";
 
 export default function Header() {
   const { data: session } = useSession();
 
   const pathname = usePathname();
   const isHome = pathname === "/";
+
+  const fetchUser = async () => {
+    const res = await fetch("/api/user");
+    const data = await res.json();
+    console.log(data);
+  };
+
+  useEffect(() => {
+    if (session?.user) {
+      console.log(session.user);
+    }
+  }, [session]);
 
   return (
     <header className="py-4 px-6 bg-white shadow-sm">
