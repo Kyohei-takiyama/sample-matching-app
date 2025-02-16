@@ -3,7 +3,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 // 共通のAxiosインスタンスを作成
 const apiClient: AxiosInstance = axios.create({
-  baseURL: process.env.ENDPOINT_URL || "hppt://localhost:5000",
+  baseURL: process.env.ENDPOINT_URL || "http://localhost:5050",
   timeout: 10000, // タイムアウトを10秒に設定
 });
 

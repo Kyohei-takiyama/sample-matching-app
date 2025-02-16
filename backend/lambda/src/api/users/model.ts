@@ -42,3 +42,7 @@ export async function updateUserModel(id: number, userData: any) {
 export async function deleteUserModel(id: number) {
   return await prisma.user.delete({ where: { id } });
 }
+
+export async function getUserByEmailModel(email: string) {
+  return await prisma.user.findUnique({ where: { email } });
+}

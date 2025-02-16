@@ -5,6 +5,7 @@ import {
   createUserModel,
   updateUserModel,
   deleteUserModel,
+  getUserByEmailModel,
 } from "./model";
 
 export async function fetchAllUsers() {
@@ -33,4 +34,9 @@ export async function modifyUser(id: number, userData: any) {
 export async function removeUser(id: number) {
   if (!id) throw new Error("User ID is required");
   return await deleteUserModel(id);
+}
+
+export async function fetchUserByEmail(email: string) {
+  if (!email) throw new Error("Email is required");
+  return await getUserByEmailModel(email);
 }

@@ -16,3 +16,11 @@ export interface User {
   applications?: Application[];
   favorites?: Favorite[];
 }
+
+export type UserPayload = Omit<User, "id" | "createdAt" | "updatedAt">;
+
+export type IsExistedCheckPayload = Pick<User, "email">;
+
+export type IsExistedCheckResponse = {
+  isExisted: boolean;
+};

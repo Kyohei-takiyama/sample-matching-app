@@ -6,7 +6,9 @@ import {
   addUser,
   modifyUser,
   removeUser,
+  fetchUserByEmail,
 } from "./logic";
+import { IsExistedCheckPayload } from "./type";
 
 export const getAllUsers = async (c: Context) => {
   try {
@@ -56,6 +58,19 @@ export const deleteUser = async (c: Context) => {
   try {
     const deletedUser = await removeUser(id);
     return c.json(deletedUser);
+  } catch (err: any) {
+    return c.json({ error: err.message }, 500);
+  }
+};
+
+export const checkExistedUser = async (c: Context) => {
+  const { email } = (await c.req.json()) as IsExistedCheckPayload;
+  try {
+    const user = await fetchUserByEmail(email);
+    if (user) {
+      return c.json({ isExisted: true });
+    }
+    return c.json({ isExisted: false });
   } catch (err: any) {
     return c.json({ error: err.message }, 500);
   }
