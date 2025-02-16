@@ -33,14 +33,17 @@ export function RegistrationForm() {
     try {
       const email = session?.user?.email as string;
       // ユーザー情報を登録する処理
-      await createUser({
+      const res = await createUser({
         firstName,
         lastName,
         email,
         phone,
-        skills,
         experience,
       });
+
+      if (res.data === null) {
+        throw new Error("ユーザー情報の登録に失敗しました");
+      }
 
       toast({
         title: "登録成功",

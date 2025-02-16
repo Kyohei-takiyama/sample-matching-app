@@ -8,7 +8,6 @@ export interface User {
   lastName: string;
   email: string;
   phone?: string;
-  skills?: string;
   experience?: string;
   salesforceId?: string;
   createdAt: string; // ISO形式の日付文字列

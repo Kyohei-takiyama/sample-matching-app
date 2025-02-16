@@ -18,7 +18,6 @@ export async function createUserModel(userData: any) {
       lastName: userData.lastName,
       email: userData.email,
       phone: userData.phone,
-      skills: userData.skills,
       experience: userData.experience,
       salesforceId: userData.salesforceId,
     },
@@ -33,7 +32,6 @@ export async function updateUserModel(id: number, userData: any) {
       lastName: userData.lastName,
       email: userData.email,
       phone: userData.phone,
-      skills: userData.skills,
       experience: userData.experience,
     },
   });

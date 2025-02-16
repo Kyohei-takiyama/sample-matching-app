@@ -1,4 +1,6 @@
 // src/api/users/logic.ts
+import { createExternalUser } from "../salesforce/logic";
+import { SalesforceExternalUserPayload } from "../salesforce/type";
 import {
   getUserModel,
   getAllUsersModel,
@@ -22,8 +24,23 @@ export async function addUser(userData: any) {
   if (!userData.email || !userData.firstName || !userData.lastName) {
     throw new Error("Missing required fields");
   }
-  // 他のビジネスルール（例: 重複チェックなど）もここで実施可能
-  return await createUserModel(userData);
+
+  const createdUser = await createUserModel(userData);
+
+  // Salesforce への連携を行う
+  const createUserPayload: SalesforceExternalUserPayload = {
+    id: createdUser.id,
+    firstName: createdUser.firstName,
+    lastName: createdUser.lastName,
+    email: createdUser.email,
+    phone: createdUser.phone || "",
+    experience: createdUser.experience || "",
+    createdAt: createdUser.createdAt.toISOString(),
+    updatedAt: createdUser.updatedAt.toISOString(),
+  };
+  createExternalUser(createUserPayload);
+
+  return createdUser;
 }
 
 export async function modifyUser(id: number, userData: any) {

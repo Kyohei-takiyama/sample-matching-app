@@ -14,10 +14,12 @@
         "@prisma/client": "6.3.0",
         "@types/aws-lambda": "8.10.147",
         "@types/bun": "^1.2.2",
+        "axios": "^1.7.9",
         "dotenv": "^16.4.7",
         "dotenv-cli": "8.0.0",
         "hono": "4.6.2",
         "install": "^0.13.0",
+        "npm": "^11.1.0",
         "uuid": "^11.0.5",
         "zod": "3.23.8"
     },

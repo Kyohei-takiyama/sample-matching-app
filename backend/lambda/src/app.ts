@@ -1,10 +1,11 @@
-// src/backend.ts
+// src/app.ts
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { handle, LambdaContext, LambdaEvent } from "hono/aws-lambda";
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import userApp from "./api/users";
+import salesforceApp from "./api/salesforce";
 
 // SSM Client を作成（リージョンは Lambda の実行環境に合わせる）
 const ssmClient = new SSMClient({
@@ -20,6 +21,14 @@ async function getFrontendUrl(): Promise<string> {
   const response = await ssmClient.send(command);
   return response.Parameter?.Value || "";
 }
+
+const baseUrl = process.env.SALESFORCE_URL;
+const clientId = process.env.SF_CLIENT_ID;
+const clientSecret = process.env.SF_CLIENT_SECRET;
+
+console.log("Salesforce URL:", baseUrl);
+console.log("Salesforce Client ID:", clientId);
+console.log("Salesforce Client Secret:", clientSecret);
 
 // Hono アプリケーションの初期化（起動時に Parameter 取得）
 async function createApp(): Promise<Hono> {
@@ -46,6 +55,9 @@ async function createApp(): Promise<Hono> {
 
   // /api/users 以下のリクエストは userApp にルーティング
   app.route("/api/users", userApp);
+
+  // /api/salesforce 以下のリクエストは salesforceApp にルーティング
+  app.route("/api/salesforce", salesforceApp);
 
   return app;
 }
