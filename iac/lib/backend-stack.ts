@@ -25,6 +25,9 @@ export class BackendStack extends cdk.Stack {
     const username = process.env.RDS_USERNAME!;
     const password = process.env.RDS_PASSWORD!;
     const databaseName = process.env.RDS_DATABASE_NAME!;
+    const SALESFORCE_URL = process.env.SALESFORCE_URL!;
+    const SF_CLIENT_ID = process.env.SF_CLIENT_ID!;
+    const SF_CLIENT_SECRET = process.env.SF_CLIENT_SECRET!;
     const DATABASE_URL = `mysql://${username}:${password}@${clusterEndpoint.hostname}:${clusterEndpoint.port}/${databaseName}`;
     console.log(`DATABASE_URL: ${DATABASE_URL}`);
 
@@ -39,6 +42,9 @@ export class BackendStack extends cdk.Stack {
       securityGroups: [props.sg],
       environment: {
         DATABASE_URL,
+        SALESFORCE_URL,
+        SF_CLIENT_ID,
+        SF_CLIENT_SECRET,
       },
 
       architecture: lambda.Architecture.ARM_64,

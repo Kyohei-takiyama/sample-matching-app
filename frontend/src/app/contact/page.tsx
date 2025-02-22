@@ -6,14 +6,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Toaster } from "@/components/ui/toaster";
 
 import Header from "@/components/Header";
+import { createLead } from "../services/salesforceService";
+import { SalesforceLeadPayload } from "@/types/salesforce";
+import { useToast } from "@/hooks/use-toast";
 
 // Zod でフォームのスキーマを定義
 const contactSchema = z.object({
   companyName: z.string().min(1, { message: "企業名は必須です" }),
   companyUrl: z.string().url({ message: "正しいURLを入力してください" }),
-  contactName: z.string().min(1, { message: "担当者氏名は必須です" }),
+  firstName: z.string().min(1, { message: "名前は必須です" }),
+  lastName: z.string().min(1, { message: "名字は必須です" }),
   contactPhone: z.string().min(1, { message: "電話番号は必須です" }),
   contactEmail: z
     .string()
@@ -29,10 +34,13 @@ const contactSchema = z.object({
 type ContactFormData = z.infer<typeof contactSchema>;
 
 export default function Contact() {
+  const { toast } = useToast();
+
   const [formData, setFormData] = useState<ContactFormData>({
     companyName: "",
     companyUrl: "",
-    contactName: "",
+    firstName: "",
+    lastName: "",
     contactPhone: "",
     contactEmail: "",
     recruitmentReason: "",
@@ -55,7 +63,7 @@ export default function Contact() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Zod で検証
     const result = contactSchema.safeParse(formData);
@@ -70,12 +78,38 @@ export default function Contact() {
       });
       setErrors(fieldErrors);
       console.log("Validation errors:", result.error.errors);
+      toast({
+        title: "エラー",
+        description: "入力内容に誤りがあります。",
+        variant: "destructive",
+      });
     } else {
       // バリデーション成功時はエラー state をクリア
       setErrors({});
-      console.log("Validated form data:", result.data);
-      alert("送信しました");
-      // ここでサーバーへの送信などの処理を実行する
+      // 送信処理を書く
+      const payload: SalesforceLeadPayload = {
+        companyName: formData.companyName,
+        companyUrl: formData.companyUrl,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.contactEmail,
+        phone: formData.contactPhone,
+        recruitmentReason: formData.recruitmentReason,
+      };
+      try {
+        await createLead(payload);
+        toast({
+          title: "登録成功",
+          description: "ユーザー情報が正常に登録されました。",
+        });
+      } catch (error) {
+        console.error("Failed to create lead", error);
+        toast({
+          title: "エラー",
+          description: "登録中にエラーが発生しました。もう一度お試しください。",
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -114,16 +148,27 @@ export default function Contact() {
           </div>
 
           <div>
-            <Label htmlFor="contactName">担当者氏名</Label>
+            <Label htmlFor="contactName">担当者性</Label>
             <Input
-              id="contactName"
-              name="contactName"
-              value={formData.contactName}
+              id="lastName"
+              name="lastName"
+              value={formData.lastName}
               onChange={handleInputChange}
               placeholder="山田 太郎"
             />
-            {errors.contactName && (
-              <p className="text-red-500 text-sm">{errors.contactName}</p>
+            {errors.lastName && (
+              <p className="text-red-500 text-sm">{errors.lastName}</p>
+            )}
+            <Label htmlFor="contactName">担当者名</Label>
+            <Input
+              id="firstName"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleInputChange}
+              placeholder="山田 太郎"
+            />
+            {errors.firstName && (
+              <p className="text-red-500 text-sm">{errors.firstName}</p>
             )}
           </div>
 
@@ -174,6 +219,7 @@ export default function Contact() {
           </Button>
         </form>
       </div>
+      <Toaster />
     </>
   );
 }

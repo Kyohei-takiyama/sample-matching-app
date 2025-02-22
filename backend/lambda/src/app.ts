@@ -62,17 +62,17 @@ async function createApp(): Promise<Hono> {
   return app;
 }
 
-if (import.meta.main) {
-  const Bun = await import("bun");
-  const app = await createApp();
-  // PORT 環境変数があればそれを使い、なければ 5000 番ポートで起動
-  const port = Number(process.env.PORT) || 5050;
-  console.log(`Starting server on http://localhost:${port}`);
-  Bun.serve({
-    fetch: app.fetch, // Hono アプリの fetch ハンドラを渡す
-    port,
-  });
-}
+// if (import.meta.main) {
+//   const Bun = await import("bun");
+//   const app = await createApp();
+//   // PORT 環境変数があればそれを使い、なければ 5000 番ポートで起動
+//   const port = Number(process.env.PORT) || 5050;
+//   console.log(`Starting server on http://localhost:${port}`);
+//   Bun.serve({
+//     fetch: app.fetch, // Hono アプリの fetch ハンドラを渡す
+//     port,
+//   });
+// }
 
 // Lambda ハンドラー（Hono の handle をラップ）
 export const handler = async (event: LambdaEvent, context: LambdaContext) => {
