@@ -15,6 +15,7 @@ export interface BackendStackProps extends cdk.StackProps {
   databaseCluster: rds.IDatabaseCluster;
   vpc: ec2.IVpc;
   sg: ec2.ISecurityGroup;
+  queueUrl: string;
 }
 
 export class BackendStack extends cdk.Stack {
@@ -45,6 +46,7 @@ export class BackendStack extends cdk.Stack {
         SALESFORCE_URL,
         SF_CLIENT_ID,
         SF_CLIENT_SECRET,
+        SQS_ENDPOINT: props.queueUrl,
       },
 
       architecture: lambda.Architecture.ARM_64,

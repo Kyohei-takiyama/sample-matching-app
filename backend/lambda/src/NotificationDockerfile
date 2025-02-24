@@ -1,0 +1,18 @@
+FROM node:20 AS builder
+
+WORKDIR /app
+RUN npm init -y
+RUN npm install -g typescript
+RUN npm install --save aws-sdk
+RUN npm install --save-dev @types/node @types/aws-lambda
+COPY emailSender.ts ./
+RUN tsc emailSender.ts
+
+FROM public.ecr.aws/lambda/nodejs:20
+
+# Builder ステージで生成された emailSender.js をコピー
+COPY --from=builder /app/emailSender.js ${LAMBDA_TASK_ROOT}/
+# Builder ステージでインストールした node_modules をコピー（依存関係のため）
+COPY --from=builder /app/node_modules ${LAMBDA_TASK_ROOT}/node_modules
+
+CMD [ "emailSender.handler" ]

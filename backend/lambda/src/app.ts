@@ -6,6 +6,7 @@ import { handle, LambdaContext, LambdaEvent } from "hono/aws-lambda";
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import userApp from "./api/users";
 import salesforceApp from "./api/salesforce";
+import notificationApp from "./api/notification";
 
 // SSM Client を作成（リージョンは Lambda の実行環境に合わせる）
 const ssmClient = new SSMClient({
@@ -45,7 +46,7 @@ async function createApp(): Promise<Hono> {
   app.use(
     "*",
     cors({
-      origin: ["http://localhost:3000", frontendUrl],
+      origin: ["http://localhost", frontendUrl],
       allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       allowHeaders: ["Content-Type", "Authorization"],
     })
@@ -58,6 +59,9 @@ async function createApp(): Promise<Hono> {
 
   // /api/salesforce 以下のリクエストは salesforceApp にルーティング
   app.route("/api/salesforce", salesforceApp);
+
+  // /api/notifications 以下のリクエストは notificationApp にルーティング
+  app.route("/api/notifications", notificationApp);
 
   return app;
 }
