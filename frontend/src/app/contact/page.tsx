@@ -7,11 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Toaster } from "@/components/ui/toaster";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 import Header from "@/components/Header";
 import { createLead } from "../services/salesforceService";
 import { SalesforceLeadPayload } from "@/types/salesforce";
-import { useToast } from "@/hooks/use-toast";
 
 // Zod でフォームのスキーマを定義
 const contactSchema = z.object({
@@ -35,6 +36,7 @@ type ContactFormData = z.infer<typeof contactSchema>;
 
 export default function Contact() {
   const { toast } = useToast();
+  const router = useRouter();
 
   const [formData, setFormData] = useState<ContactFormData>({
     companyName: "",
@@ -98,10 +100,7 @@ export default function Contact() {
       };
       try {
         await createLead(payload);
-        toast({
-          title: "登録成功",
-          description: "ユーザー情報が正常に登録されました。",
-        });
+        router.push("/contact/completed");
       } catch (error) {
         console.error("Failed to create lead", error);
         toast({
