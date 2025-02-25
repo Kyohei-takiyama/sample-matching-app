@@ -7,6 +7,7 @@ import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import userApp from "./api/users";
 import salesforceApp from "./api/salesforce";
 import notificationApp from "./api/notification";
+import { init as loggerInit } from "./middleware/logger";
 
 // SSM Client を作成（リージョンは Lambda の実行環境に合わせる）
 const ssmClient = new SSMClient({
@@ -40,7 +41,7 @@ async function createApp(): Promise<Hono> {
   const app = new Hono();
 
   // ログの設定
-  app.use("*", logger());
+  app.use(loggerInit());
 
   // CORS ミドルウェアに localhost と Parameter Store から取得した URL を設定
   app.use(

@@ -37,8 +37,26 @@ export class RdsStack extends cdk.Stack {
 
     // VPC の作成
     this.vpc = new ec2.Vpc(this, "AppVpc", {
+      cidr: "10.1.0.0/16", // 一意の CIDR ブロックを指定
       maxAzs: 2,
-      natGateways: 0,
+      natGateways: 1,
+      subnetConfiguration: [
+        {
+          cidrMask: 24,
+          name: "Public",
+          subnetType: ec2.SubnetType.PUBLIC,
+        },
+        {
+          cidrMask: 24,
+          name: "Private",
+          subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+        },
+        {
+          cidrMask: 28,
+          name: "Isolated",
+          subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
+        },
+      ],
     });
 
     // RDS のセキュリティグループ
@@ -89,6 +107,12 @@ export class RdsStack extends cdk.Stack {
       description: "Security group for Lambda function",
       allowAllOutbound: true,
     });
+
+    this.lambdaSG.addIngressRule(
+      ec2.Peer.anyIpv4(),
+      ec2.Port.allTraffic(),
+      "Allow all inbound traffic from anywhere"
+    );
 
     // セキュリティグループ間の通信許可
     dbSecurityGroup.addIngressRule(

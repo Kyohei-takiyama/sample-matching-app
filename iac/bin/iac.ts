@@ -23,4 +23,5 @@ new BackendStack(app, "BackendStack", {
   vpc: rdsStack.vpc,
   sg: rdsStack.lambdaSG,
   queueUrl: sqsStack.sqsEndpoint,
+  queueArn: sqsStack.queueArn,
 });

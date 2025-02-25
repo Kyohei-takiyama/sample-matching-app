@@ -62,6 +62,10 @@ cd iac
 cdk deploy
 
 cdk deploy --all
+
+# 削除
+cdk destroy --all --force
+aws cloudformation delete-stack --stack-name RdsStack --retain-resources MigrationCustomResource
 ```
 
 ## AWS 構成

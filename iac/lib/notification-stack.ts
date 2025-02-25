@@ -8,6 +8,7 @@ import * as iam from "aws-cdk-lib/aws-iam";
 
 export class NotificationStack extends cdk.Stack {
   public readonly sqsEndpoint: string;
+  public readonly queueArn: string;
 
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -52,5 +53,6 @@ export class NotificationStack extends cdk.Stack {
 
     // SQS キューの URL を出力
     this.sqsEndpoint = emailQueue.queueUrl;
+    this.queueArn = emailQueue.queueArn;
   }
 }

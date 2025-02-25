@@ -16,6 +16,7 @@ export interface BackendStackProps extends cdk.StackProps {
   vpc: ec2.IVpc;
   sg: ec2.ISecurityGroup;
   queueUrl: string;
+  queueArn: string;
 }
 
 export class BackendStack extends cdk.Stack {
@@ -37,8 +38,9 @@ export class BackendStack extends cdk.Stack {
       handler: "handler",
       runtime: lambda.Runtime.NODEJS_20_X,
       vpc: props.vpc,
+      timeout: cdk.Duration.seconds(900),
       vpcSubnets: {
-        subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
       },
       securityGroups: [props.sg],
       environment: {
@@ -83,6 +85,14 @@ export class BackendStack extends cdk.Stack {
       new iam.PolicyStatement({
         actions: ["ssm:GetParameter"],
         resources: [props.frontendUrlParameter.parameterArn],
+      })
+    );
+
+    // sqs:sendmessageの権限を追加
+    fn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["sqs:SendMessage"],
+        resources: [props.queueArn],
       })
     );
 
